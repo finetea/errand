@@ -16,7 +16,9 @@ Including another URLconf
 from django.conf.urls import patterns, url, include
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
+from rest_framework.urlpatterns import format_suffix_patterns
 from django.contrib import admin
+from apis import views
 
 
 # Serializers define the API representation.
@@ -41,6 +43,11 @@ admin.autodiscover()
 # Additionally, we include login URLs for the browseable API.
 urlpatterns = patterns('',
     url(r'^', include(router.urls)),
+    url(r'^contracts/$', views.contract_list),
+    #url(r'^contracts/(?P<pk>[0-9]+)$', views.contract_detail),
     url(r'^api-auth/', include('rest_framework.urls',namespace='rest_framework')),
-    url(r'^admin/', include(admin.site.urls)),
+    #url(r'^admin/', include(admin.site.urls)),
 )
+
+urlpatterns = format_suffix_patterns(urlpatterns)
+
