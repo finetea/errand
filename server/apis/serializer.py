@@ -8,14 +8,13 @@ from apis.models import Contract
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'password', 'phonenumber')
+        fields = ('id', 'username', 'password')
         write_only_fields = ('password',)
         read_only_fields = ('id',)
 
     def create(self, validated_data):
         user = User.objects.create(
             username=validated_data['username'],
-            phonenumber=validated_data['phonenumber'],
         )
 
         user.set_password(validated_data['password'])
@@ -23,10 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
 
         return user
 
-
-
 class ContractSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contract
         fields = ('title', 'location')
-
