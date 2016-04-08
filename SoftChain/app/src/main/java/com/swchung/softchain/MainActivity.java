@@ -1,9 +1,13 @@
 package com.swchung.softchain;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -50,8 +54,33 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // start service
-        //startService(new Intent(this, MainService.class));
+        startService(new Intent(this, MainService.class));
     }
+
+
+    /*
+    Getting broadcast message from service.
+    onResume, onPause, BroadcastReceiver are needed.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("soft.contract.service");
+        registerReceiver(serviceBrHandler, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(serviceBrHandler);
+    }
+
+    BroadcastReceiver serviceBrHandler = new BroadcastReceiver(){
+        public void onReceive(Context context, Intent intent){
+            Log.i("MAIN_ACTIVITY", "###### get intent from service");
+        }
+    };
 
     @Override
     public void onBackPressed() {

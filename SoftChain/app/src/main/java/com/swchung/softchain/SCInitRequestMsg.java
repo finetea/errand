@@ -8,4 +8,9 @@ public class SCInitRequestMsg extends SCMsg implements ISCRequestMsg {
     public String toJson() {
         return null;
     }
+
+    @Override
+    public void sendMsg() {
+
+    }
 }

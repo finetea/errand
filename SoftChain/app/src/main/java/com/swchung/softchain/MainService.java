@@ -12,43 +12,19 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 import android.os.Process;
+import retrofit2.Call;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.Retrofit;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 /**
  * Created by icete on 2016-04-05.
  */
-/*
-public class MainService extends IntentService {
-    public static final String SVC_TAG = "SC_SERVICE";
 
-    public MainService() {
-        super("MainService");
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
-        return super.onStartCommand(intent,flags,startId);
-    }
-
-    @Override
-    public void onDestroy() {
-        Toast.makeText(this, "service stopped", Toast.LENGTH_SHORT).show();
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onHandleIntent(Intent intent) {
-        Toast.makeText(this, "onHandleIntent", Toast.LENGTH_SHORT).show();
-        String message = intent.getStringExtra("clicked");
-        Log.i(SVC_TAG, "button clicked " + message);
-
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-}
-*/
 public class MainService extends Service {
-
     public static final String SVC_TAG = "SC_SERVICE";
+
     private Looper mServiceLooper;
     private ServiceHandler mServiceHandler;
 
@@ -61,19 +37,15 @@ public class MainService extends Service {
         @Override
         public void handleMessage(Message msg) {
             String value = msg.getData().getString("MSG_ID");
-            Log.i(SVC_TAG, "arg1 : " + msg.arg1 +  ", data : " + value);
+            Log.i(SVC_TAG, "arg1 : " + msg.arg1 + ", data : " + value);
 
+            ISCRequestMsg requestMsg = SCMsgFactory.getInstance().processInnerMessage(msg.getData());
+            if (requestMsg != null) {
+
+            }
         }
     }
-/*
-    public void sendBroadcastNotification(Bundle extras) {
-        Intent intentBroadcast = new Intent(BROADCAST_MESSAGE_NAME);
-        intentBroadcast.putExtra(CoreConstants.EXTRA_INTENT_MSG_ID,
-                mIntentMsgId);
 
-        sendBroadcast(intentBroadcast);
-    }
-*/
     @Override
     public void onCreate() {
         // Start up the thread running the service.  Note that we create a
@@ -115,5 +87,10 @@ public class MainService extends Service {
         Toast.makeText(this, "service done", Toast.LENGTH_SHORT).show();
     }
 
-
+    public void sendBRMessageToActivity(Bundle bundle) {
+        Intent intent= new Intent();
+        intent.setAction("soft.contract.service");
+        intent.putExtras(bundle);
+        sendBroadcast(intent);
+    }
 }

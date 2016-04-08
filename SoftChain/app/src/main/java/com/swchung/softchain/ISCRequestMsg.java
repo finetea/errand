@@ -5,4 +5,5 @@ package com.swchung.softchain;
  */
 public interface ISCRequestMsg {
     String toJson();
+    void sendMsg();
 }

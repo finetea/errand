@@ -27,7 +27,7 @@ public class DbManager {
 
     public void createDb() {
         try {
-            //_db = SQLiteDatabase.openOrCreateDatabase(_SC_DB_NAME, Context.MODE_WORLD_WRITEABLE, null);
+            _db = SQLiteDatabase.openOrCreateDatabase(_SC_DB_NAME, null, null);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
